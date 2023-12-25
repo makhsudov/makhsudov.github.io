@@ -1,0 +1,342 @@
+/* ---------- ANA ---------- */
+html {
+  scroll-behavior: smooth;
+  height: 100vh;
+  color: #1d1d1f;
+  letter-spacing: 0.01cm;
+}
+
+body {
+  font-family: 'Fira Sans Extra Condensed';
+  font-size: 22px;
+  margin: 0px; 
+  min-height: 100vh;
+  background: #E0FFFF; 
+  display: flex;
+  flex-direction: column;
+}
+a {
+  color: #99dddd; /*son*/
+  text-decoration: none;
+}
+/* ---------- ---------- ---------- */
+
+
+
+
+
+/* ---------- GIRIS SAYFASI ---------- */
+.giris {
+  background: #000;
+  background-image: url("img/ana.jpg");
+  background-position: center calc(50% + 0px);
+  background-size: cover; 
+} 
+.giris:before {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color:rgba(0, 0, 0, 50%);
+} 
+.giris_content {
+  align-items: center;
+  height: 100vh;
+  margin: 80px;
+  margin-bottom: 0px;
+  margin-top: 0px; 
+  text-align: center;
+}
+.giris_content h1 {
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+  font-size: 100px;
+  margin: 0; 
+  letter-spacing: 5px; 
+} 
+.giris_content p {
+  text-align: center;
+  color: rgb(195,195,195);
+} 
+.giris_text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px; 
+} 
+
+.dugme a {
+  display: inline-block;
+  background-color: #2793ff;
+  padding: 15px 24px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+/* ---------- ---------- ---------- */
+
+
+
+
+
+
+
+
+/* -------- BOLUM 2 --------- */
+.bolum2 {
+  min-height: 100%; 
+  background-color: #E0FFFF; 
+}
+.bolum2_content { 
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin:40px;
+  margin-top: 0px; 
+  flex-direction: row;
+  text-align: center;
+}
+.bolum2_content h1 {
+  margin: 0;
+} 
+.bolum2_content p {
+  text-align: center;
+}
+.bolum2_content {
+  text-align: justify;
+}
+.giris_text2 {
+  margin-bottom: 20px;
+  margin-top: 40px;
+  text-align: center;
+  text-align: center;
+}
+.giris_text2 p {
+  color: #1d1d1f;
+  opacity: 0.8;
+  margin-top: 10px;
+  padding-left: 15vw;
+  padding-right: 15vw;
+}
+.harita  {
+  width: 100%; 
+  text-align: center;
+  font-style: italic;
+  color: rgb(165, 160, 160);
+  font-size: 1rem;
+  line-height: 1.6;
+  align-items: center; 
+}
+.harita_content {
+  width: 600px;
+  height: 450px;
+  background-color: rgba(0,0,0,0.2);
+  padding: 5px 5px;
+  display: inline-block;
+  border:0;
+  text-align: center;
+}
+
+/* ---------- ---------- ---------- */
+
+
+
+
+
+
+/* ---------- BOLUM 3 ---------- */ 
+.bolum3 {
+  min-height: 100%; 
+  background-color: #1a1a1a;   
+  color: #fff;
+}
+.bolum3_content { 
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin:40px;
+  margin-top: 0px; 
+  flex-direction: row;
+  text-align: center;
+}
+.bolum3 h1 {
+  margin: 0;
+} 
+.bolum3 p {
+  text-align: center;
+} 
+.rehber_text {
+  margin-bottom: 20px;
+  margin-top: 40px;
+  text-align: center;
+  text-align: center; 
+}
+.rehber_text p { 
+  color: #fff;
+  opacity: 0.8; 
+  margin-top: 10px;
+  padding-left: 15vw;
+  padding-right: 15vw;
+} 
+.rehber {
+  margin-left: -30px;
+  margin-right: -30px;
+  text-align: center;
+}
+.rehber::after {
+  content: '';
+  clear: both;
+  display:block;
+  font-size: 0;
+}
+.rehber-1 {
+  width:300px;
+  text-align: center; 
+  display: inline-block;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 15px;
+}
+.rehber-1 h4 {
+  margin: 0;
+}
+.rehber_link {
+  width:300px;
+  display: contents;
+} 
+/* ---------- ---------- ---------- */
+
+
+
+/* ---------- DORT SAYFA ---------- */ 
+header {
+  box-shadow: 0 1px 1px  rgba(0, 0, 0, 0.1);
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+
+}
+.head {
+  text-align: center;
+  background-color: #e0f9f9;
+  padding: 15px;
+  vertical-align: center; 
+}
+.sayfa { 
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin:40px;
+  margin-top: 0px; 
+  flex-direction: row;
+  text-align: center; 
+} 
+.sayfa h1 {
+  margin: 0;
+} 
+.sayfa_text {
+  text-align: justify;
+  line-height: 30px;
+  text-indent: 1cm;
+}
+
+.blok {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #1d1d1f;
+  text-align: left;
+}
+.blok h2 {
+  margin-top: 80px;
+  text-align: center;
+}
+.blok p {
+  margin-left: 20px;
+  margin-right: 20px; 
+  color: #394141;
+  text-align: left;
+}
+.blok li {
+  color: #394141;
+}
+.baslik {
+  text-align: left;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+/* Tarih */
+table {
+  padding: 0;
+  border-collapse:collapse;
+  width: 100%; 
+  text-align: center;
+  border: 0.1px solid #b9bec4; 
+  margin: 0;
+}
+th {
+  border: 0.1px solid #b9bec4;
+}
+td {
+  border: 0.1px solid #b9bec4; 
+}
+/* ---------- ---------- ---------- */
+
+ 
+
+
+
+
+/* ---------- footer ---------- */ 
+footer {
+  margin-top: auto;
+  /* box-shadow: 0 7px 20px  rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 -1px 1px  rgba(0, 0, 0, 0.1); 
+}
+.foot {
+  text-align: center;
+  background-color: #e0f9f9; /*#E0FFFF*/
+  padding: 15px;
+}
+.foot span { 
+  margin-right: 10px;
+}
+
+/* ---------- ---------- ---------- */ 
+
+
+/* ---------- mobil adaptasyon ---------- */ 
+@media screen and (max-width: 712px) {
+  .map {
+    width: 450px;
+    height: 300px;
+  }
+}
+@media screen and (max-width: 550px) {
+  .map {
+    width: 300px;
+    height: 150px;
+  }
+}
+@media screen and (max-width: 488px) {
+  .giris_text {
+    width: 80%;
+  }
+  .giris_content h1 {
+    font-size: 80px;
+  }
+  .map {
+    width: 90%;
+    height: 150px;
+  }
+}
+
