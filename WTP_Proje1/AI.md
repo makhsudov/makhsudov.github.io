@@ -1,6 +1,6 @@
 # AI.md - Yapay Zeka Promtları
 
-Bu dosya, **«Teach Me! Mr. Punching Bag»** oyun projesinin geliştirilmesi sırasında [Claude](claude.ai) yapay zekasına sorulan soruları ve alınan cevapları içermektedir.
+Bu dosya, **«Teach Me! Mr. Punching Bag»** oyun projesinin geliştirilmesi sırasında [Claude](https://claude.ai) yapay zekasına sorulan soruları ve alınan cevapları içermektedir.
 
 ## Promtlar ve Cevaplar
 
