@@ -118,3 +118,10 @@ _Ana prensipler:_
 - Date.now() gerçek zaman kontrolü için kullanılır
 - Her timer için ayrı kontrol yapılır
 
+
+### 3. Arka Plan Görseli Prompt'ı
+
+**Prompt:** "Boks oyunum için arka plan görseli oluşturacak İngilizce prompt'a ihtiyacım var. Oyuncu boks torbasına vuruyor ve torbanın arkasında ev spor salonu görünmeli. Arka plan tasarımı nasıl olmalı?"
+
+**Cevap:** Arka plan görseli için şu İngilizce prompt'ı kullanabilirsin:
+```A home gym interior background for a boxing game, viewed from front perspective. The scene should show a spacious garage or basement converted into a personal gym. Include concrete or wooden floors, exposed brick or cement walls, hanging heavy bags in the background, weight racks, exercise equipment, dim atmospheric lighting with strong shadows, industrial ceiling with exposed beams or pipes, some motivational posters on walls, and a gritty, realistic gym atmosphere. The lighting should be moody with warm tungsten bulbs creating dramatic shadows. Style: realistic, detailed, game background art, 16:10 aspect ratio, no people visible```
