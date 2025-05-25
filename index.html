@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr. Punching Bag - JS Oyun Projesi</title>
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+          background: #000;
+          font-family: Arial, sans-serif;
+          overflow: hidden;
+      }
+      
+      canvas {
+          display: block;
+          background: #1b1820; 
+      }
+      
+      /* Başlangıç menüsü */
+      #startMenu {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%); /* Tam ortalama */
+          text-align: center;
+          color: white;
+          z-index: 10; /* Canvas'ın üstünde görünmesi için */
+      }
+      
+      /* Başlat butonu stili */
+      #startButton {
+          padding: 20px 40px;
+          font-size: 24px;
+          background: #a1a1aa;
+          color: white;
+          border: none;
+          border-radius: 15px;
+          cursor: pointer;
+          margin-top: 20px;
+      }
+      
+      /* Buton üzerine gelindiğinde renk değişimi */
+      #startButton:hover {
+          background: #71717a; /* Daha koyu gri */
+      }
+      
+      /* Gizleme sınıfı - menüyü gizlemek için */
+      .hidden {
+          display: none;
+      }
+  </style>
+</head>
+<body>
+  <!-- Oyun başlangıç menüsü -->
+  <div id="startMenu">
+      <h1>«Mr. Punching Bag»</h1>
+      <p>Boks torbasını HAREKET ETTİRMEK için ← → OK tuşlarını kullanın<br>
+      Boksör saldırdığında BLOK yapmak için BOŞLUK tuşuna basın</p>
+      <button id="startButton">Oyunu Başlat</button>
+  </div>
+  
+  <!-- Ana oyun canvası -->
+  <canvas id="gameCanvas"></canvas>
+  
+  <script>
+      // HTML elementlerini JavaScript'e bağlama
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d'); // 2D çizim bağlamı
+      const startMenu = document.getElementById('startMenu');
+      const startButton = document.getElementById('startButton');
+      
+      // SABİT OYUN ALANI BOYUTLARI - Farklı ekran boyutlarında orantıyı korumak için
+      const GAME_WIDTH = 1200; 
+      const GAME_HEIGHT = 800;  
+      
+      // Canvas boyutunu tarayıcı penceresine göre ayarlama
+      canvas.width = window.innerWidth;   
+      canvas.height = window.innerHeight; 
+	  
+      // Oyunu ekranın ORTASINDA göstermek için ölçek ve kayma hesaplaması
+      let scale = Math.min(canvas.width / GAME_WIDTH, canvas.height / GAME_HEIGHT); // En küçük ölçek oranı
+      let offsetX = (canvas.width - GAME_WIDTH * scale) / 2;  // Yatay ortalama kayması
+      let offsetY = (canvas.height - GAME_HEIGHT * scale) / 2; // Dikey ortalama kayması
+      
+      // EKRAN TİTREŞİM SİSTEMİ - Oyunda darbe efektleri için
+      let screenShake = {
+          active: false,    // Titreşim aktif mi?
+          intensity: 0,     // Titreşim şiddeti
+          duration: 0,      // Toplam süre (milisaniye)
+          timer: 0,         // Kalan süre sayacı
+          offsetX: 0,       // X ekseninde kayma miktarı
+          offsetY: 0        // Y ekseninde kayma miktarı
+      };
+      
+      // Titreşim efektini başlatan fonksiyon
+      function startScreenShake(intensity, duration) {
+          screenShake.active = true;
+          screenShake.intensity = intensity;
+          screenShake.duration = duration;
+          screenShake.timer = duration;
+      }
+      
+      // Her frame'de titreşimi güncelleyen fonksiyon
+      function updateScreenShake() {
+          // Titreşim aktif değilse sıfırla ve çık
+          if (!screenShake.active) {
+              screenShake.offsetX = 0;
+              screenShake.offsetY = 0;
+              return;
+          }
+          
+          // Zamanlayıcıyı azalt (60 FPS için ~16ms)
+          screenShake.timer -= 16;
+          
+          // Süre bittiyse titreşimi durdur
+          if (screenShake.timer <= 0) {
+              screenShake.active = false;
+              screenShake.offsetX = 0;
+              screenShake.offsetY = 0;
+              return;
+          }
+          
+          // Kalan zamana göre titreşim şiddetini hesapla (azalan efekt)
+          const progress = screenShake.timer / screenShake.duration;
+          const currentIntensity = screenShake.intensity * progress;
+          
+          // Rastgele yönlerde titreşim kayması oluştur
+          screenShake.offsetX = (Math.random() - 0.5) * currentIntensity * 2;
+          screenShake.offsetY = (Math.random() - 0.5) * currentIntensity * 2;
+      }
+      
+      // SES SİSTEMİ - Oyun içi ses efektleri
+      const sounds = {}; // Ses dosyalarını saklayan obje
+      const soundList = [
+          'sound/boxing_bag_hit.mp3',    // Torbaya darbe sesi
+          'sound/boxing_bag_combo.mp3',  // Kombo darbe sesi
+          'sound/boxing_bag_chains.mp3', // Zincir hareket sesi
+          'sound/punch_duz.mp3',         // Düz yumruk sesi
+          'sound/punch_sol.mp3',         // Sol kroşe sesi
+          'sound/punch_sag.mp3'          // Sağ kroşe sesi
+      ];
+      
+      // Ses dosyalarını önceden yükleme (preload)
+      soundList.forEach(soundName => {
+          sounds[soundName] = new Audio();
+          sounds[soundName].src = soundName;
+          sounds[soundName].preload = 'auto'; // Otomatik ön yükleme
+      });
+      
+      // Ses çalma fonksiyonu - hata yakalama ile
+      function playSound(soundName) {
+          if (sounds[soundName]) {
+              sounds[soundName].currentTime = 0; // Sesi başa al
+              sounds[soundName].play().catch(e => console.log('Ses çalma hatası:', e));
+          }
+      }
+      
+      // ANA OYUN DEĞİŞKENLERİ
+      let gameState = 'menu';    // Oyun durumu: menu, playing, gameOver
+      let score = 0;             // Oyuncu skoru
+      let combo = 0;             // Ardışık başarılı blok sayısı
+      let missedHits = 0;        // Kaçırılan darbe sayısı (maksimum 3) yoksa motivasyon düşür
+      let boxerSpeed = 2000;     // Boksörün saldırılar arası bekleme süresi (ms)
+      let lastAttackTime = 0;    // Son saldırının zamanı
+      
+      // BOKS TORBASI OBJESİ - Oyuncunun kontrol ettiği karakter
+      let punchingBag = {
+          x: GAME_WIDTH / 2,        // X pozisyonu (başlangıçta merkez)
+          y: 0,                     // Y pozisyonu (ekranın en üstünden asılı)
+          width: 500,               // Torba genişliği
+          height: 650,              // Torba yüksekliği (zincir dahil)
+          position: 'center',       // Mevcut pozisyon: left, center, right
+          isBlocking: false,        // Blok yapıyor mu?
+          isCatching: false,        // Darbeyi yakalıyor mu? (bloksuz)
+          effectTimer: 0,           // Blok/yakalama animasyon süresi
+          returnTimer: 0,           // Merkeze dönüş zamanlayıcısı
+          returnDelay: 1500         // Merkeze dönüş gecikmesi (ms)
+      };
+      
+      // BOKSÖR OBJESİ - Bilgisayar kontrollü rakip
+      let boxer = {
+          x: GAME_WIDTH / 2 - 200,  // X pozisyonu (sabit)
+          y: GAME_HEIGHT - 480,     // Y pozisyonu (alt kısımda)
+          width: 400,               // Boksör genişliği
+          height: 480,              // Boksör yüksekliği
+          state: 'idle',            // Mevcut durum: idle, windup_*, punch_*, disappointed
+          animationTimer: 0,        // Animasyon zamanlayıcısı
+          attackDirection: 'center', // Saldırı yönü: left, center, right
+          isAttacking: false,       // Şu anda saldırıyor mu?
+          attackBlocked: false      // Bu saldırı blok edildi mi? (tekrar işlemeyi önler)
+      };
+      
+      // GÖRSEL DOSYALARI SİSTEMİ
+      const images = {};     // Yüklenen görselleri saklayan obje
+      const imageList = [
+          'image/background.png',        // Arka plan
+          // Torba görselleri - farklı pozisyonlar
+          'image/bag_center.png',        
+          'image/bag_left.png',      
+          'image/bag_right.png',     
+		  // Torba BLOK görselleri (space basıldığında)
+          'image/bag_block_center.png',  
+          'image/bag_block_left.png',    
+          'image/bag_block_right.png',   
+          // Yakalama görselleri
+          'image/bag_catch_center.png', 
+          'image/bag_catch_left.png',   
+          'image/bag_catch_right.png',  
+          // Boksör görselleri
+          'image/boxer_idle.png',        // Beklemede
+          'image/boxer_windup_left.png', // Sol kroşe hazırlık
+          'image/boxer_punch_left.png',  // Sol kroşe
+          'image/boxer_windup_center.png', // Düz yumruk hazırlık
+          'image/boxer_punch_center.png',  // Düz yumruk
+          'image/boxer_windup_right.png',  // Sağ kroşe hazırlık
+          'image/boxer_punch_right.png',   // Sağ kroşe
+          'image/boxer_disappointed.png'   // Hayal kırıklığı (oyun sonu)
+      ];
+      
+      let imagesLoaded = 0; // Yüklenen görsel sayısı
+      
+      // Görselleri asenkron olarak yükleme 
+      imageList.forEach(imageName => {
+          images[imageName] = new Image();
+          images[imageName].onload = () => {
+              imagesLoaded++;
+              // Tüm görseller yüklendiğinde konsola mesaj yazdır
+              if (imagesLoaded === imageList.length) {
+                  console.log('Tüm görseller yüklendi');
+              }
+          };
+          images[imageName].src = imageName; // Yüklemeyi başlat
+      });
+      
+      // KLAVYE KONTROL SİSTEMİ
+      const keys = {}; // Basılı tuşları takip eden obje
+      
+      // Tuşa basıldığında çalışan olay dinleyicisi
+      document.addEventListener('keydown', (e) => {
+          keys[e.code] = true; // Tuşu basılı olarak işaretle
+          
+          // Oyun oynandığında özel tuş işlemleri
+          if (gameState === 'playing') {
+              if (e.code === 'Space') {
+                  e.preventDefault(); // Sayfanın aşağı kaymasını önle
+                  blockPunch();       // Blok fonksiyonunu çağır
+              }
+          }
+      });
+      
+      // Tuş bırakıldığında çalışan olay dinleyicisi
+      document.addEventListener('keyup', (e) => {
+          keys[e.code] = false; // Tuşu bırakılmış olarak işaretle
+      });
+      
+      // BLOK YAPMA FONKSİYONU - Oyunun ana mekaniklerinden biri
+      function blockPunch() {
+          // Başarılı blok koşulları: Boksör saldırıyor + Doğru yön + Henüz blok edilmemiş
+          if (boxer.isAttacking && boxer.attackDirection === punchingBag.position && !boxer.attackBlocked) {
+              // BAŞARILI BLOK DURUMU
+              punchingBag.isBlocking = true;    // Blok animasyonunu aktifleştir
+              punchingBag.isCatching = false;   // Yakalama animasyonunu deaktifleştir
+              punchingBag.effectTimer = 300;    // Animasyon süresini ayarla
+              combo++;                          // Kombo sayacını artır
+              score += 1000 * combo;            // Skor = 1000 × kombo çarpanı
+              boxer.attackBlocked = true;       // Bu saldırının işlendiğini işaretle
+              
+              // Ses efekti seçimi - kombo durumuna göre
+              if (combo >= 1) {
+                  playSound('sound/boxing_bag_combo.mp3'); // Kombo sesi (1+ başarılı blok)
+              } else {
+                  playSound('sound/boxing_bag_hit.mp3');   // Normal darbe sesi
+              }
+              
+              // Titreşim efekti - sadece kombolarda
+              if (combo >= 1) {
+                  const intensity = Math.min(5 + (combo * 1), 10);     // Maksimum 10 şiddet
+                  const duration = Math.min(150 + (combo * 25), 300);  // Maksimum 300ms süre
+                  startScreenShake(intensity, duration);
+              }
+              
+          } else if (boxer.isAttacking && !boxer.attackBlocked) {
+              // YANLIŞ YÖN BLOKU - Boksör saldırıyor ama torba yanlış pozisyonda
+              missedHits++;                // Hata sayacını artır
+              combo = 0;                   // Komboyu sıfırla
+              boxer.attackBlocked = true;  // Saldırıyı işlenmiş olarak işaretle - tek bir saldırının birden fazla işlenmesini önler
+              
+          } else {
+              // ZAMANINDA OLMAYAN BLOK - Sadece animasyon göster
+              punchingBag.isBlocking = true;
+              punchingBag.isCatching = false;
+              punchingBag.effectTimer = 200; 
+          }
+      }
+      
+      // BOKSÖR SALDIRI FONKSİYONU - Bilgisayarının saldırı başlatması
+      function boxerAttack() {
+          // Rastgele saldırı yönü seçimi
+          const directions = ['left', 'center', 'right'];
+          boxer.attackDirection = directions[Math.floor(Math.random() * directions.length)];
+          
+          // Saldırı hazırlık durumuna geçiş
+          boxer.state = `windup_${boxer.attackDirection}`;
+          boxer.animationTimer = 800;        // Hazırlık süresi (800ms)
+          boxer.attackBlocked = false;       // Yeni saldırı için flag'i temizle
+          lastAttackTime = Date.now();       // Son saldırı zamanını güncelle
+          
+          // Saldırı yönüne göre ses efekti
+          if (boxer.attackDirection === 'center') {
+              playSound('sound/punch_duz.mp3');   // Düz yumruk sesi
+          } else if (boxer.attackDirection === 'left') {
+              playSound('sound/punch_sol.mp3');   // Sol kroşe sesi
+          } else if (boxer.attackDirection === 'right') {
+              playSound('sound/punch_sag.mp3');   // Sağ kroşe sesi
+          }
+      }
+      
+      // ANA OYUN GÜNCELLEMESİ - Her frame'de çalışır (60 FPS)
+      function update() {
+          // Oyun oynamıyorsa güncelleme yapma
+          if (gameState !== 'playing') return;
+          
+          const currentTime = Date.now(); // Mevcut zaman (milisaniye)
+          
+          // Ekran titreşim efektini güncelle
+          updateScreenShake();
+          
+          // TORBA HAREKET KONTROLÜ - Ok tuşları ile
+          let bagMoved = false; // Hareket bayrakı
+          
+          // Sol ok tuşu - pozisyonu sola kaydır
+          if (keys['ArrowLeft']) {
+              if (punchingBag.position === 'center') {
+                  punchingBag.position = 'left';
+                  bagMoved = true;
+              } else if (punchingBag.position === 'right') {
+                  punchingBag.position = 'center';
+                  bagMoved = true;
+              }
+              // Sol pozisyondayken daha sola gitme
+          }
+          
+          // Sağ ok tuşu - pozisyonu sağa kaydır
+          if (keys['ArrowRight']) {
+              if (punchingBag.position === 'center') {
+                  punchingBag.position = 'right';
+                  bagMoved = true;
+              } else if (punchingBag.position === 'left') {
+                  punchingBag.position = 'center';
+                  bagMoved = true;
+              }
+              // Sağ pozisyondayken daha sağa gitme
+          }
+          
+          // Hareket sesini çal ve geri dönüş zamanlayıcısını sıfırla
+          if (bagMoved) {
+              playSound('sound/boxing_bag_chains.mp3'); // Zincir hareket sesi
+              punchingBag.returnTimer = 0;              // Otomatik dönüş zamanlayıcısını sıfırla
+          }
+          
+          // TORBANIN OTOMATİK MERKEZE DÖNÜŞÜ - 1.5 saniye hareketsizlik sonrası
+          if (punchingBag.position !== 'center') {
+              punchingBag.returnTimer += 16; // Her frame 16ms ekle
+              if (punchingBag.returnTimer >= punchingBag.returnDelay) {
+                  punchingBag.position = 'center';
+                  punchingBag.returnTimer = 0;
+              }
+          }
+          
+          // Torbanın ekrandaki X koordinatını pozisyona göre güncelle
+          if (punchingBag.position === 'left') {
+              punchingBag.x = GAME_WIDTH / 2 - 250;      // Sol pozisyon
+          } else if (punchingBag.position === 'right') {
+              punchingBag.x = GAME_WIDTH / 2 + 250;      // Sağ pozisyon  
+          } else {
+              punchingBag.x = GAME_WIDTH / 2;            // Merkez pozisyon
+          }
+          
+          // Blok/yakalama animasyon zamanlayıcısını güncelle
+          if (punchingBag.effectTimer > 0) {
+              punchingBag.effectTimer -= 16; // Her frame 16ms azalt
+              if (punchingBag.effectTimer <= 0) {
+                  // Animasyon bittiğinde efektleri deaktifleştir
+                  punchingBag.isBlocking = false;
+                  punchingBag.isCatching = false;
+              }
+          }
+          
+          // BOKSÖR ANİMASYON GÜNCELLEMESİ
+          if (boxer.animationTimer > 0) {
+              boxer.animationTimer -= 16; // Zamanlayıcıyı azalt
+              
+              if (boxer.animationTimer <= 0) {
+                  // Animasyon süresi dolduğunda durum geçişi
+                  
+                  if (boxer.state.includes('windup')) {
+                      // HAZIRLIK → DARBE geçişi
+                      boxer.state = boxer.state.replace('windup', 'punch');
+                      boxer.animationTimer = 300;  // Darbe süresi (300ms)
+                      boxer.isAttacking = true;    // Saldırı aktif
+                      
+                  } else if (boxer.state.includes('punch')) {
+                      // DARBE → İDLE geçişi ve sonuç hesaplama
+                      
+                      // Sadece blok edilmemişse sonucu hesapla
+                      if (!boxer.attackBlocked) {
+                          if (boxer.attackDirection === punchingBag.position) {
+                              // TORBA DARBE YOLUNDA AMA BLOK YAPILMADI
+                              punchingBag.isCatching = true;  // Yakalama animasyonu
+                              punchingBag.isBlocking = false;
+                              punchingBag.effectTimer = 300;
+                              score += 100;                   // Küçük puan (100)
+                              combo = 0;                      // Komboyu sıfırla
+                              playSound('sound/boxing_bag_hit.mp3'); // Normal darbe sesi
+                              
+                          } else {
+                              // TAMAMEN ISKALAMA - Torba farklı pozisyonda
+                              missedHits++;  // Hata sayacını artır
+                              combo = 0;     // Komboyu sıfırla
+                          }
+                      }
+                      
+                      // Boksörü bekleme durumuna döndür
+                      boxer.state = 'idle';
+                      boxer.isAttacking = false;
+                      boxer.attackBlocked = false;
+                  }
+              }
+          }
+          
+          // YENİ SALDIRI ZAMANLAYICISI - Boksör boştayken yeni saldırı başlat
+          if (currentTime - lastAttackTime > boxerSpeed && boxer.state === 'idle') {
+              boxerAttack();                              // Yeni saldırı başlat
+              boxerSpeed = Math.max(1000, boxerSpeed - 50); // Hızı artır (minimum 1 saniye)
+          }
+          
+          // OYUN BİTİŞ KONTROLÜ - 3 hata = oyun bitti
+          if (missedHits >= 3) {
+              gameState = 'gameOver';           // Oyun durumunu bitir
+              boxer.state = 'disappointed';     // Boksörü hayal kırıklığı durumuna al
+          }
+      }
+      
+      // ÇİZİM FONKSİYONU - Tüm görselleri ekrana çizer
+      function draw() {
+          // Canvas'ı tamamen temizle
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          
+          // ÖLÇEKLENDİRME VE TİTREŞİM DÖNÜŞÜMÜ
+          ctx.save(); // Mevcut dönüşüm durumunu kaydet
+          
+          // Oyunu merkeze alma + titreşim efekti
+          ctx.translate(
+              offsetX + screenShake.offsetX * scale,  // X kaydırma + titreşim
+              offsetY + screenShake.offsetY * scale   // Y kaydırma + titreşim
+          );
+          ctx.scale(scale, scale); // Ölçeklendirme uygula
+          
+          // ARKA PLAN ÇİZİMİ
+          if (images['image/background.png'].complete) {
+              ctx.drawImage(images['image/background.png'], 0, 0, GAME_WIDTH, GAME_HEIGHT);
+          }
+          
+          // OYUN ELEMANLARI (sadece oyun oynandığında veya bittiğinde)
+          if (gameState === 'playing' || gameState === 'gameOver') {
+              
+              // BOKS TORBASI ÇİZİMİ (boksörün arkasında kalması için önce çizilir)
+              let bagImage;
+              
+              // Torbanın durumuna göre görsel seçimi
+              if (punchingBag.isBlocking) {
+                  bagImage = `image/bag_block_${punchingBag.position}.png`; // Blok görseli
+              } else if (punchingBag.isCatching) {
+                  bagImage = `image/bag_catch_${punchingBag.position}.png`; // Yakalama görseli
+              } else {
+                  bagImage = `image/bag_${punchingBag.position}.png`;       // Normal görsel
+              }
+              
+              // Torba görselini çiz (merkez noktasından çizim)
+              if (images[bagImage] && images[bagImage].complete) {
+                  ctx.drawImage(images[bagImage], 
+                      punchingBag.x - punchingBag.width/2,  // X - Merkezden başla
+                      punchingBag.y,                        // Y - Üstten başla
+                      punchingBag.width,                    // Genişlik
+                      punchingBag.height);                  // Yükseklik
+              }
+              
+              // BOKSÖR ÇİZİMİ (ön planda)
+              let boxerImage = `image/boxer_${boxer.state}.png`; // Duruma göre görsel
+              if (images[boxerImage] && images[boxerImage].complete) {
+                  ctx.drawImage(images[boxerImage], boxer.x, boxer.y, boxer.width, boxer.height);
+              }
+              
+              // KULLANICI ARAYÜZÜ ÇİZİMİ
+              drawUI();
+          }
+          
+          ctx.restore(); // Dönüşüm durumunu eski haline getir
+      }
+      
+      // KULLANICI ARAYÜZÜ ÇİZİM FONKSİYONU
+      function drawUI() {
+          // Metin stili ayarları
+          ctx.fillStyle = 'white';
+          ctx.font = '32px Arial';
+          
+          // SKOR GÖSTER (sağ üst köşe)
+          ctx.textAlign = 'right';
+          ctx.fillText(`Skor: ${score}`, GAME_WIDTH - 30, 50);
+          
+          // KOMBO GÖSTER (sadece 2 ve üzeri)
+          if (combo > 1) {
+              ctx.fillText(`Kombo: x${combo}`, GAME_WIDTH - 30, 90);
+          }
+          
+          // BOKSÖR MOTİVASYON ÇUBUĞU (sol alt köşe)
+          const motivationWidth = 250;   // Çubuk genişliği
+          const motivationHeight = 30;   // Çubuk yüksekliği
+          const motivationX = 30;        // X pozisyonu
+          const motivationY = GAME_HEIGHT - 60; // Y pozisyonu
+          
+          // Çubuk arka planı (kırmızı - boş durum)
+          ctx.fillStyle = 'red';
+          ctx.fillRect(motivationX, motivationY, motivationWidth, motivationHeight);
+          
+          // Motivasyon seviyesi hesaplama (3 hata = 0 motivasyon)
+          const motivationLevel = Math.max(0, (3 - missedHits) / 3);
+          
+          // Dolgu rengi - motivasyon seviyesine göre
+          ctx.fillStyle = motivationLevel > 0.5 ? 'green' : 'orange';
+          ctx.fillRect(motivationX, motivationY, motivationWidth * motivationLevel, motivationHeight);
+          
+          // Çubuk çerçevesi (beyaz)
+          ctx.strokeStyle = 'white';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(motivationX, motivationY, motivationWidth, motivationHeight);
+          
+          // Motivasyon etiketi
+          ctx.fillStyle = 'white';
+          ctx.font = '20px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('Boksör Motivasyonu', motivationX, motivationY - 10);
+          
+          // OYUN BİTTİ EKRANI
+          if (gameState === 'gameOver') {
+              // Yarı saydam siyah overlay
+              ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+              ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+              
+              // Oyun bitti metni
+              ctx.fillStyle = 'white';
+              ctx.font = '48px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('Oyun Bitti!', GAME_WIDTH/2, GAME_HEIGHT/2 - 50);
+              
+              // Final
+			  // Final skoru göster
+             ctx.font = '24px Arial';
+             ctx.fillText(`Final Skoru: ${score}`, GAME_WIDTH/2, GAME_HEIGHT/2);
+             
+             // Yeniden başlatma talimatı
+             ctx.fillText('Yeniden başlatmak için F5\'e basın', GAME_WIDTH/2, GAME_HEIGHT/2 + 50);
+         }
+     }
+     
+     // ANA OYUN DÖNGÜSÜ - 60 FPS ile sürekli çalışır
+     function gameLoop() {
+         update(); // Oyun mantığını güncelle
+         draw();   // Ekrana çiz
+         requestAnimationFrame(gameLoop); // Bir sonraki frame için kendini çağır
+     }
+     
+     // OYUN BAŞLATMA OLAY DİNLEYİCİSİ
+     startButton.addEventListener('click', () => {
+         startMenu.classList.add('hidden'); // Başlangıç menüsünü gizle
+         gameState = 'playing';              // Oyun durumunu aktif yap
+         lastAttackTime = Date.now();        // İlk saldırı zamanlayıcısını başlat
+     });
+     
+     // PENCERE BOYUTU DEĞİŞİKLİĞİ - Responsive tasarım
+     window.addEventListener('resize', () => {
+         // Canvas boyutunu yeni pencere boyutuna göre ayarla
+         canvas.width = window.innerWidth;
+         canvas.height = window.innerHeight;
+         
+         // Ölçeklendirme ve ortalama değerlerini yeniden hesapla
+         scale = Math.min(canvas.width / GAME_WIDTH, canvas.height / GAME_HEIGHT);
+         offsetX = (canvas.width - GAME_WIDTH * scale) / 2;  // Yatay ortalama
+         offsetY = (canvas.height - GAME_HEIGHT * scale) / 2; // Dikey ortalama
+     });
+     
+     // OYUN DÖNGÜSÜNÜ BAŞLAT - Sayfa yüklendiğinde otomatik başlar
+     gameLoop();
+ </script>
+</body>
+</html>
