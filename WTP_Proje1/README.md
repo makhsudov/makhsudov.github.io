@@ -36,7 +36,7 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 
 ## 🎥 Oynanış Videosu
 
-[![Oynanış Videosu](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
+[![Oynanış Videosu](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://youtu.be/ZT-h6K26Bzc)
 
 ## 🛠️ Kullanılan Teknolojiler
 
