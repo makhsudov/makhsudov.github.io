@@ -1,7 +1,6 @@
-![image](https://github.com/user-attachments/assets/dc6e07a7-f71a-4264-bf91-b975ed7447a0)# Teach Me! Mr. Punching Bag
+# Teach Me! Mr. Punching Bag
 
-https://makhsudov.github.io/WTP_Proje1/
-Deneyimli ve bilge bir boks torbası olarak, acemi bir boksörü eğitmeye hazır mısın? Yeni başlayan boksörün henüz yumruk atmayı bilmiyor, bu yüzden deneyimi eğlenceli hale getirmen gerekiyor!
+https://makhsudov.github.io/WTP_Proje1/ – Deneyimli ve bilge bir boks torbası olarak, acemi bir boksörü eğitmeye hazır mısın? Yeni başlayan boksörün henüz yumruk atmayı bilmiyor, bu yüzden deneyimi eğlenceli hale getirmen gerekiyor!
 
 ## 🎮 Oyun Hakkında
 
