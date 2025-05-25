@@ -48,13 +48,13 @@ Oyuncu bir boks torbası olarak:
 ## 📚 Kaynaklar ve Referanslar
 
 ### İlham Alınan Oyun:
-**Teach Me! Mr. Punching Bag:** [https://salut-c-leo.itch.io/mr-punching-bag]
+**Teach Me! Mr. Punching Bag:** [Kaynak linki (salut-c-leo.itch.io/)](https://salut-c-leo.itch.io/mr-punching-bag])
 
 ### Kullanılan Asset'ler ve Araçlar:
 - **Karakter Sprite'ları:** [Kaynak linki (itch.io)](https://salut-c-leo.itch.io/mr-punching-bag)
 - **Background Resmi:** [Kaynak linki (deepai.org)](https://deepai.org/machine-learning-model/text2img)
 - **Ses Efektleri:** [Kaynak linki (pixabay.com)](https://pixabay.com/)
 - **Boksörün sesi:** [Kaynak linki (narekeet.com)](http://narakeet.com/languages/text-to-speech-turkish/)
-- **Piksele dönüştürmek** [Kaynak linki (onlinepngtools.com)](https://onlinepngtools.com/pixelate-png)
-- **Çevrimiçi Photoshop** [Kaynak linki (photopea.com)](https://www.photopea.com/)
-- **Yapay Zeka** [Kaynak linki (claude.ai)][https://claude.ai/]
+- **Piksele dönüştürmek:** [Kaynak linki (onlinepngtools.com)](https://onlinepngtools.com/pixelate-png)
+- **Çevrimiçi Photoshop:** [Kaynak linki (photopea.com)](https://www.photopea.com/)
+- **Yapay Zeka:** [Kaynak linki (claude.ai)](https://claude.ai)
