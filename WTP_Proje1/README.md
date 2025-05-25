@@ -14,6 +14,7 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 - **Space Tuşu:** Savunma yapmak ve yavaşlamak için
 
 ![Kontrol Tuşları](image/tuslar.png)
+
 *Oyun kontrolleri*
 
 **Amaç:** Boksörün yumruklarını yakalamak ve motivasyonunu yüksek tutmak!
