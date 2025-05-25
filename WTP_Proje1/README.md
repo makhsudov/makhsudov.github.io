@@ -49,7 +49,7 @@ Oyuncu bir boks torbası olarak:
 ## 📚 Kaynaklar ve Referanslar
 
 ### İlham Alınan Oyun:
-**Teach Me! Mr. Punching Bag:** [Kaynak linki (salut-c-leo.itch.io/)](https://salut-c-leo.itch.io/mr-punching-bag])
+- **Teach Me! Mr. Punching Bag:** [Kaynak linki (salut-c-leo.itch.io/)](https://salut-c-leo.itch.io/mr-punching-bag])
 
 ### Kullanılan Asset'ler ve Araçlar:
 - **Karakter Sprite'ları:** [Kaynak linki (itch.io)](https://salut-c-leo.itch.io/mr-punching-bag)
