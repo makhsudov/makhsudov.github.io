@@ -31,7 +31,7 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 ![Ana Oynanış](image/screenshot1.png)
 *Mr. Punching Bag antrenman sırasında*
 
-![Oyun Sonu](image/screenshot1.png)
+![Oyun Sonu](image/screenshot2.png)
 *Motivasyon düştüğünde oyun sonu ekranı*
 
 ## 🎥 Oynanış Videosu
