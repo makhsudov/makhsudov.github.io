@@ -27,9 +27,11 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 
 ## 🖼️ Oyun İçi Görüntüler
 
-![Ana Oynanış](image/screenshot1.png)
+![Oyun Resmi](image/screenshot1.png)
 
-![Oyun Sonu](image/screenshot2.png)
+![Oyun Resmi](image/screenshot2.png)
+
+![Oyun Resmi](image/screenshot3.png)
 
 ## 🎥 Oynanış Videosu
 
