@@ -1,5 +1,6 @@
 # Teach Me! Mr. Punching Bag
 
+https://makhsudov.github.io/WTBProje1/
 Deneyimli ve bilge bir boks torbası olarak, acemi bir boksörü eğitmeye hazır mısın? Yeni başlayan boksörün henüz yumruk atmayı bilmiyor, bu yüzden deneyimi eğlenceli hale getirmen gerekiyor!
 
 ## 🎮 Oyun Hakkında
