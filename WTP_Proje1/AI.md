@@ -70,3 +70,51 @@ ctx.translate(
     offsetY + screenShake.offsetY * scale   
 );
 ```
+
+markdown### 2. FPS Kontrolü ve Zamanlayıcı Yönetimi
+
+**Prompt:** "Oyun döngüsünde FPS'i nasıl sabit tutuyorum ve zamanlayıcıları doğru şekilde nasıl güncelliyorum?"
+
+**Cevap:** Kodda FPS kontrolü ve zamanlayıcı güncellemeleri şu şekilde yapılıyor:
+
+```javascript
+function update() {
+   if (gameState !== 'playing') return;
+   
+   const currentTime = Date.now();
+   
+   updateScreenShake();
+   
+   if (punchingBag.effectTimer > 0) {
+       punchingBag.effectTimer -= 16;
+       if (punchingBag.effectTimer <= 0) {
+           punchingBag.isBlocking = false;
+           punchingBag.isCatching = false;
+       }
+   }
+   
+   if (boxer.animationTimer > 0) {
+       boxer.animationTimer -= 16;
+   }
+   
+   if (punchingBag.position !== 'center') {
+       punchingBag.returnTimer += 16;
+       if (punchingBag.returnTimer >= punchingBag.returnDelay) {
+           punchingBag.position = 'center';
+           punchingBag.returnTimer = 0;
+       }
+   }
+}
+
+function gameLoop() {
+   update();
+   draw();
+   requestAnimationFrame(gameLoop);
+}
+```
+_Ana prensipler:_
+- requestAnimationFrame() 60 FPS sağlar
+- Tüm zamanlayıcılar 16ms (1 frame) artırılır/azaltılır
+- Date.now() gerçek zaman kontrolü için kullanılır
+- Her timer için ayrı kontrol yapılır
+
