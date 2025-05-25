@@ -71,7 +71,7 @@ ctx.translate(
 );
 ```
 
-markdown### 2. FPS Kontrolü ve Zamanlayıcı Yönetimi
+### 2. FPS Kontrolü ve Zamanlayıcı Yönetimi
 
 **Prompt:** "Oyun döngüsünde FPS'i nasıl sabit tutuyorum ve zamanlayıcıları doğru şekilde nasıl güncelliyorum?"
 
