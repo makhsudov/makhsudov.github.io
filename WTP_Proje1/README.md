@@ -14,7 +14,6 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 
 ![Kontrol Tuşları](image/tuslar.png)
 
-*Oyun kontrolleri*
 
 **Amaç:** Boksörün yumruklarını yakalamak ve motivasyonunu yüksek tutmak!
 
