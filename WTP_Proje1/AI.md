@@ -11,17 +11,15 @@ Bu dosya, **«Teach Me! Mr. Punching Bag»** oyun projesinin geliştirilmesi sı
 **Cevap:** Kodda ekran titreşim efekti şu şekilde uygulanmış:
 
 ```javascript
-// EKRAN TİTREŞİM SİSTEMİ - Oyunda darbe efektleri için
 let screenShake = {
-   active: false,    // Titreşim aktif mi?
-   intensity: 0,     // Titreşim şiddeti
-   duration: 0,      // Toplam süre (milisaniye)
-   timer: 0,         // Kalan süre sayacı
-   offsetX: 0,       // X ekseninde kayma miktarı
-   offsetY: 0        // Y ekseninde kayma miktarı
+   active: false,    
+   intensity: 0,    
+   duration: 0,     
+   timer: 0,         
+   offsetX: 0,     
+   offsetY: 0        
 };
 
-// Titreşim efektini başlatan fonksiyon
 function startScreenShake(intensity, duration) {
    screenShake.active = true;
    screenShake.intensity = intensity;
@@ -29,7 +27,6 @@ function startScreenShake(intensity, duration) {
    screenShake.timer = duration;
 }
 
-// Her frame'de titreşimi güncelleyen fonksiyon
 function updateScreenShake() {
    if (!screenShake.active) {
        screenShake.offsetX = 0;
@@ -60,16 +57,16 @@ Kombo sırasında titreşim tetikleme:
 ```javascript
 // Titreşim efekti - sadece kombolarda
 if (combo >= 1) {
-    const intensity = Math.min(5 + (combo * 1), 10);     // Maksimum 10 şiddet
-    const duration = Math.min(150 + (combo * 25), 300);  // Maksimum 300ms süre
+    const intensity = Math.min(5 + (combo * 1), 10);     
+    const duration = Math.min(150 + (combo * 25), 300);  
     startScreenShake(intensity, duration);
 }
 ```
-```javascript
+
 Çizim fonksiyonunda uygulama:
-javascript// Oyunu merkeze alma + titreşim efekti
+```javascript
 ctx.translate(
-    offsetX + screenShake.offsetX * scale,  // X kaydırma + titreşim
-    offsetY + screenShake.offsetY * scale   // Y kaydırma + titreşim
+    offsetX + screenShake.offsetX * scale,  
+    offsetY + screenShake.offsetY * scale   
 );
 ```
