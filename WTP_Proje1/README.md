@@ -25,6 +25,14 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 - Motivasyon sistemi
 - Pixel art stili
 
+## 🎯 Oyun Mekaniği
+
+Oyuncu bir boks torbası olarak:
+- Boksörün yumruklarını yakalamaya çalışır
+- Çok fazla vuruş kaçırırsa boksörün motivasyonu düşer
+- Space tuşu ile savunma yapabilir ve tempo kontrol edebilir
+- Başarılı yakalamalar puan kazandırır
+
 ## 🖼️ Oyun İçi Görüntüler
 
 ![Oyun Resmi 1](image/screenshot1.png)
@@ -37,13 +45,6 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 
 [Oynanış Videosu](https://youtu.be/ZT-h6K26Bzc)
 
-## 🎯 Oyun Mekaniği
-
-Oyuncu bir boks torbası olarak:
-- Boksörün yumruklarını yakalamaya çalışır
-- Çok fazla vuruş kaçırırsa boksörün motivasyonu düşer
-- Space tuşu ile savunma yapabilir ve tempo kontrol edebilir
-- Başarılı yakalamalar puan kazandırır
 
 ## 📚 Kaynaklar ve Referanslar
 
