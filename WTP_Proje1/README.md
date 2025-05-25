@@ -20,18 +20,18 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 ## 👉 Oyun Özellikleri
 
 - Eğlenceli ve benzersiz oynanış mekaniği
-- Gerçekçi fizik simülasyonu
-- Artan zorluk seviyesi
+- Gerçekçi fizik simülasyonu (png resimleri nedeniyle)
+- Artan zorluk seviyesi (boksörün vuruş hızı)
 - Motivasyon sistemi
-- Retro pixel art stili
+- Pixel art stili
 
 ## 🖼️ Oyun İçi Görüntüler
 
-![Oyun Resmi](image/screenshot1.png)
+![Oyun Resmi 1](image/screenshot1.png)
 
-![Oyun Resmi](image/screenshot2.png)
+![Oyun Resmi 2](image/screenshot2.png)
 
-![Oyun Resmi](image/screenshot3.png)
+![Oyun Resmi 3](image/screenshot3.png)
 
 ## 🎥 Oynanış Videosu
 
@@ -50,9 +50,11 @@ Oyuncu bir boks torbası olarak:
 ### İlham Alınan Oyun:
 **Teach Me! Mr. Punching Bag:** [https://salut-c-leo.itch.io/mr-punching-bag]
 
-### Kullanılan Asset'ler:
+### Kullanılan Asset'ler ve Araçlar:
 - **Karakter Sprite'ları:** [Kaynak linki (itch.io)](https://salut-c-leo.itch.io/mr-punching-bag)
 - **Background Resmi:** [Kaynak linki (deepai.org)](https://deepai.org/machine-learning-model/text2img)
 - **Ses Efektleri:** [Kaynak linki (pixabay.com)](https://pixabay.com/)
 - **Boksörün sesi:** [Kaynak linki (narekeet.com)](http://narakeet.com/languages/text-to-speech-turkish/)
-
+- **Piksele dönüştürmek** [Kaynak linki (onlinepngtools.com)](https://onlinepngtools.com/pixelate-png)
+- **Çevrimiçi Photoshop** [Kaynak linki (photopea.com)](https://www.photopea.com/)
+- **Yapay Zeka** [Kaynak linki (claude.ai)][https://claude.ai/]
