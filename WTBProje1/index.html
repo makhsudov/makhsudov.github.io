@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mr. Punching Bag - JS Oyun Projesi</title>
+  <title>Mr. Punching Bag - JS Oyun Projesi - 22360859373</title>
   <style>
       body {
           margin: 0;
@@ -162,7 +162,7 @@
       let score = 0;             // Oyuncu skoru
       let combo = 0;             // Ardışık başarılı blok sayısı
       let missedHits = 0;        // Kaçırılan darbe sayısı (maksimum 3) yoksa motivasyon düşür
-      let boxerSpeed = 2000;     // Boksörün saldırılar arası bekleme süresi (ms)
+      let boxerSpeed = 2000;     // Boksörün saldırılar arası bekleme süresi (ms) (değişecek)
       let lastAttackTime = 0;    // Son saldırının zamanı
       
       // BOKS TORBASI OBJESİ - Oyuncunun kontrol ettiği karakter
@@ -433,7 +433,7 @@
           // YENİ SALDIRI ZAMANLAYICISI - Boksör boştayken yeni saldırı başlat
           if (currentTime - lastAttackTime > boxerSpeed && boxer.state === 'idle') {
               boxerAttack();                              // Yeni saldırı başlat
-              boxerSpeed = Math.max(1000, boxerSpeed - 50); // Hızı artır (minimum 1 saniye)
+              boxerSpeed = Math.max(650, boxerSpeed - 50); // Hızı artır (minimum 650 ms)
           }
           
           // OYUN BİTİŞ KONTROLÜ - 3 hata = oyun bitti
