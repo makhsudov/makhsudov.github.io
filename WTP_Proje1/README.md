@@ -1,4 +1,4 @@
-# Teach Me! Mr. Punching Bag
+![image](https://github.com/user-attachments/assets/dc6e07a7-f71a-4264-bf91-b975ed7447a0)# Teach Me! Mr. Punching Bag
 
 https://makhsudov.github.io/WTP_Proje1/
 Deneyimli ve bilge bir boks torbası olarak, acemi bir boksörü eğitmeye hazır mısın? Yeni başlayan boksörün henüz yumruk atmayı bilmiyor, bu yüzden deneyimi eğlenceli hale getirmen gerekiyor!
@@ -19,7 +19,7 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 
 **Amaç:** Boksörün yumruklarını yakalamak ve motivasyonunu yüksek tutmak!
 
-## ✨ Oyun Özellikleri
+## 👉 Oyun Özellikleri
 
 - Eğlenceli ve benzersiz oynanış mekaniği
 - Gerçekçi fizik simülasyonu
@@ -30,19 +30,12 @@ Bu oyunda siz deneyimli bir boks torbasısınız ve genç bir boksörü eğitiyo
 ## 🖼️ Oyun İçi Görüntüler
 
 ![Ana Oynanış](image/screenshot1.png)
-*Mr. Punching Bag antrenman sırasında*
 
 ![Oyun Sonu](image/screenshot2.png)
-*Motivasyon düştüğünde oyun sonu ekranı*
 
 ## 🎥 Oynanış Videosu
 
-[![Oynanış Videosu](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://youtu.be/ZT-h6K26Bzc)
-
-## 🛠️ Kullanılan Teknolojiler
-
-- [Oyun motoru/programlama dili]
-- [Diğer kullanılan araçlar]
+[Oynanış Videosu](https://youtu.be/ZT-h6K26Bzc)
 
 ## 🎯 Oyun Mekaniği
 
@@ -54,20 +47,12 @@ Oyuncu bir boks torbası olarak:
 
 ## 📚 Kaynaklar ve Referanslar
 
-### Kullanılan Asset'ler:
-
-- **Karakter Sprite'ları:** [Kaynak linki](https://salut-c-leo.itch.io/mr-punching-bag)
-- **Background Resmi:** [Kaynak linki](https://deepai.org/machine-learning-model/text2img)
-- **Ses Efektleri:** [Kaynak linki](https://pixabay.com/)  
-- **UI Elementleri:** [Kaynak linki] - [Lisans bilgisi]
-- **Arka Plan:** [Kaynak linki] - [Lisans bilgisi]
-
 ### İlham Alınan Oyun:
-**Orijinal Kaynak:** [Eğer varsa orijinal oyunun linki/kaynağı]
+**Teach Me! Mr. Punching Bag:** [https://salut-c-leo.itch.io/mr-punching-bag]
 
-## 👤 Geliştirici
+### Kullanılan Asset'ler:
+- **Karakter Sprite'ları:** [Kaynak linki (itch.io)](https://salut-c-leo.itch.io/mr-punching-bag)
+- **Background Resmi:** [Kaynak linki (deepai.org)](https://deepai.org/machine-learning-model/text2img)
+- **Ses Efektleri:** [Kaynak linki (pixabay.com)](https://pixabay.com/)
+- **Boksörün sesi:** [Kaynak linki (narekeet.com)](http://narakeet.com/languages/text-to-speech-turkish/)
 
-[Edem Makhsudov] - [github.com/makhsudov]
-
----
-*Bu proje [BLM0226 Ders] kapsamında geliştirilmiştir.*
