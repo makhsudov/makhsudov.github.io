@@ -1,1 +1,325 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seminer Quiz 2025-2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="questions.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    .btn-option {
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
+    }
+    .btn-option:not(:disabled):hover {
+      transform: translateY(-1px);
+    }
+    .btn-option:not(:disabled):active {
+      transform: translateY(0);
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-white sm:bg-slate-100 flex flex-col items-center justify-center sm:p-4 font-sans">
 
+<!-- ─────────────── START SCREEN ─────────────── -->
+<div id="startScreen" class="fade-in w-full sm:max-w-lg">
+  <div class="bg-white sm:rounded-2xl sm:shadow-sm p-8 text-center">
+    <div class="text-5xl mb-4">✅</div>
+    <h1 class="text-2xl font-bold text-slate-800 mb-1">Seminer Quiz</h1>
+    <p class="text-slate-500 mb-2 text-sm">Ara Sınav • 99 soru</p>
+
+    <p class="text-slate-600 font-medium mb-3 mt-6">Mod seçin:</p>
+    <div class="inline-flex rounded-xl overflow-hidden border border-slate-200 mb-8">
+      <button id="btnOrdered"
+        onclick="setMode('ordered')"
+        class="px-5 py-2 text-sm font-semibold bg-indigo-600 text-white focus:outline-none">
+        Sıralı
+      </button>
+      <button id="btnRandom"
+        onclick="setMode('random')"
+        class="px-5 py-2 text-sm font-semibold bg-white text-slate-600 focus:outline-none">
+        Rastgele
+      </button>
+      <button id="btnFlash"
+        onclick="setMode('flashcard')"
+        class="px-5 py-2 text-sm font-semibold bg-white text-slate-600 focus:outline-none">
+        Soru-Cevap
+      </button>
+    </div>
+
+    <br />
+    <button onclick="startQuiz()"
+      class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold py-3 px-10 rounded-xl text-base transition-colors">
+      Başla →
+    </button>
+  </div>
+</div>
+
+<!-- ─────────────── QUIZ SCREEN ─────────────── -->
+<div id="quizScreen" class="hidden w-full sm:max-w-2xl">
+
+  <!-- Progress bar -->
+  <div class="mb-4 px-4 sm:px-0">
+    <div class="flex justify-between text-xs text-slate-500 mb-1">
+      <span id="progressText">Soru 1 / 99</span>
+      <span id="scoreText">✓ 0 &nbsp;✗ 0</span>
+    </div>
+    <div class="w-full bg-slate-200 rounded-full h-2">
+      <div id="progressBar" class="bg-indigo-500 h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Question card -->
+  <div id="questionCard" class="fade-in bg-white sm:rounded-2xl sm:shadow-sm p-6 md:p-8">
+    <p id="questionNumber" class="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-3"></p>
+    <p id="questionText" class="text-slate-800 text-base md:text-lg font-medium leading-relaxed mb-6"></p>
+
+    <div id="optionsContainer" class="space-y-3 mb-6"></div>
+
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button id="showAnswerBtn" onclick="revealAnswer()"
+        class="flex-1 border-2 border-indigo-400 text-indigo-600 hover:bg-indigo-50 font-semibold py-2.5 px-4 rounded-xl text-sm transition-colors">
+        Doğru cevabı göster
+      </button>
+      <button id="nextBtn" onclick="nextQuestion()"
+        class="hidden flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition-colors">
+        Sonraki soru →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── RESULT SCREEN ─────────────── -->
+<div id="resultScreen" class="hidden fade-in w-full sm:max-w-lg">
+  <div class="bg-white sm:rounded-2xl sm:shadow-sm p-8 text-center">
+    <div id="resultEmoji" class="text-5xl mb-4"></div>
+    <h2 class="text-2xl font-bold text-slate-800 mb-2">Quiz tamamlandı!</h2>
+    <p id="resultScore" class="text-4xl font-extrabold text-indigo-600 my-4"></p>
+    <p id="resultPercent" class="text-slate-500 mb-8"></p>
+    <button onclick="restartQuiz()"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-10 rounded-xl text-base transition-colors">
+      Yeniden başla
+    </button>
+  </div>
+</div>
+
+<script>
+// ─────────────── STATE ───────────────
+let questions = [];
+let currentIndex = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+let mode = 'ordered';
+
+const LABELS = ['A', 'B', 'C', 'D'];
+
+// ─────────────── MODE TOGGLE ───────────────
+function setMode(m) {
+  mode = m;
+  const active = 'px-5 py-2 text-sm font-semibold bg-indigo-600 text-white focus:outline-none';
+  const inactive = 'px-5 py-2 text-sm font-semibold bg-white text-slate-600 focus:outline-none';
+  document.getElementById('btnOrdered').className = m === 'ordered' ? active : inactive;
+  document.getElementById('btnRandom').className  = m === 'random'  ? active : inactive;
+  document.getElementById('btnFlash').className   = m === 'flashcard' ? active : inactive;
+}
+
+// ─────────────── SHUFFLE ───────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ─────────────── START ───────────────
+function startQuiz() {
+  questions = (mode === 'random' || mode === 'flashcard') ? shuffle(ALL_QUESTIONS) : [...ALL_QUESTIONS];
+  currentIndex = 0;
+  correctCount = 0;
+  wrongCount = 0;
+
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+
+  document.getElementById('scoreText').style.display = mode === 'flashcard' ? 'none' : '';
+
+  renderQuestion();
+}
+
+// ─────────────── RENDER ───────────────
+function renderQuestion() {
+  answered = false;
+  const q = questions[currentIndex];
+  const total = questions.length;
+
+  document.getElementById('progressText').textContent = `Soru ${currentIndex + 1} / ${total}`;
+  if (mode !== 'flashcard') {
+    document.getElementById('scoreText').innerHTML = `✓ ${correctCount} &nbsp;✗ ${wrongCount}`;
+  }
+  document.getElementById('progressBar').style.width = `${((currentIndex) / total) * 100}%`;
+
+  document.getElementById('questionNumber').textContent = `Soru ${currentIndex + 1}`;
+  document.getElementById('questionText').textContent = q.q;
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+
+  if (mode === 'flashcard') {
+    const answerLabel = LABELS[q.ans];
+    const answerText = q.opts[q.ans];
+    const div = document.createElement('div');
+    div.className = 'flex items-start gap-3 px-4 py-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-800 text-sm font-semibold';
+    div.innerHTML = `<span class="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500 text-white font-bold text-xs flex items-center justify-center">${answerLabel}</span><span class="pt-0.5">${answerText}</span>`;
+    container.appendChild(div);
+
+    document.getElementById('showAnswerBtn').classList.add('hidden');
+    document.getElementById('nextBtn').classList.remove('hidden');
+  } else {
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn-option w-full text-left flex items-start gap-3 px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 text-sm';
+      btn.innerHTML = `<span class="flex-shrink-0 w-7 h-7 rounded-lg bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center">${LABELS[i]}</span><span class="pt-0.5">${opt}</span>`;
+      btn.onclick = () => selectAnswer(i);
+      container.appendChild(btn);
+    });
+
+    document.getElementById('showAnswerBtn').classList.remove('hidden');
+    document.getElementById('nextBtn').classList.add('hidden');
+  }
+
+  const card = document.getElementById('questionCard');
+  card.classList.remove('fade-in');
+  void card.offsetWidth;
+  card.classList.add('fade-in');
+}
+
+// ─────────────── SELECT ───────────────
+function selectAnswer(selectedIndex) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[currentIndex];
+  const correct = q.ans;
+
+  if (selectedIndex === correct) {
+    correctCount++;
+  } else {
+    wrongCount++;
+  }
+
+  highlightOptions(correct, selectedIndex);
+}
+
+// ─────────────── REVEAL ───────────────
+function revealAnswer() {
+  if (answered) return;
+  answered = true;
+  wrongCount++;
+
+  const q = questions[currentIndex];
+  highlightOptions(q.ans, -1);
+}
+
+// ─────────────── HIGHLIGHT ───────────────
+function highlightOptions(correctIndex, selectedIndex) {
+  const btns = document.getElementById('optionsContainer').querySelectorAll('button');
+
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    const label = btn.querySelector('span:first-child');
+
+    if (i === correctIndex) {
+      btn.className = 'btn-option w-full text-left flex items-start gap-3 px-4 py-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-800 text-sm font-semibold';
+      label.className = 'flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500 text-white font-bold text-xs flex items-center justify-center';
+    } else if (i === selectedIndex && selectedIndex !== correctIndex) {
+      btn.className = 'btn-option w-full text-left flex items-start gap-3 px-4 py-3 rounded-xl border-2 border-red-600 bg-red-50 text-red-700 text-sm';
+      label.className = 'flex-shrink-0 w-7 h-7 rounded-lg bg-red-600 text-white font-bold text-xs flex items-center justify-center';
+    } else {
+      btn.className = 'btn-option w-full text-left flex items-start gap-3 px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-400 text-sm';
+      label.className = 'flex-shrink-0 w-7 h-7 rounded-lg bg-slate-200 text-slate-400 font-bold text-xs flex items-center justify-center';
+    }
+  });
+
+  document.getElementById('showAnswerBtn').classList.add('hidden');
+  document.getElementById('nextBtn').classList.remove('hidden');
+}
+
+// ─────────────── NEXT ───────────────
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ─────────────── RESULT ───────────────
+function showResult() {
+  document.getElementById('quizScreen').classList.add('hidden');
+  const result = document.getElementById('resultScreen');
+  result.classList.remove('hidden');
+
+  const total = questions.length;
+
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressText').textContent = `Soru ${total} / ${total}`;
+
+  if (mode === 'flashcard') {
+    document.getElementById('resultEmoji').textContent = '📖';
+    document.getElementById('resultScore').textContent = `${total} / ${total}`;
+    document.getElementById('resultPercent').textContent = 'Tüm sorular gözden geçirildi!';
+  } else {
+    const pct = Math.round((correctCount / total) * 100);
+    let emoji = '🎉';
+    if (pct < 40) emoji = '😓';
+    else if (pct < 70) emoji = '🙂';
+    else if (pct < 90) emoji = '😊';
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultScore').textContent = `${correctCount} / ${total}`;
+    document.getElementById('resultPercent').textContent = `Başarı oranı: %${pct}`;
+    document.getElementById('scoreText').innerHTML = `✓ ${correctCount} &nbsp;✗ ${wrongCount}`;
+  }
+
+  result.classList.remove('fade-in');
+  void result.offsetWidth;
+  result.classList.add('fade-in');
+}
+
+// ─────────────── RESTART ───────────────
+function restartQuiz() {
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('scoreText').style.display = '';
+  document.getElementById('startScreen').classList.remove('hidden');
+
+  const start = document.getElementById('startScreen');
+  start.classList.remove('fade-in');
+  void start.offsetWidth;
+  start.classList.add('fade-in');
+}
+</script>
+</body>
+</html>
