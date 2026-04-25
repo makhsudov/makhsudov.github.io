@@ -358,22 +358,7 @@ const ALL_QUESTIONS = [
     "q": "\"Stephen Curry Etkisi\" slaytında yer alan bilgilere göre, tüm zamanların üçlük lideri olan oyuncu aşağıdakilerden hangisidir?",
     "opts": ["Stephen Curry", "Hidayet Türkoğlu", "Mehmet Okur", "Alperen Şengün"],
     "ans": 0
-  },
-  {
-    "q": "Absürde karşı önerilen 3 yol hangisidir?",
-    "opts": ["Saklan - Kaç - Savaş", "Fiziksel İntihar - Felsefi İntihar - İsyan", "Depresyon - Kabul - Mutluluk", "Sanat - Edebiyat - Müzik"],
-    "ans": 1
-  },
-  {
-    "q": "\"Sonsuz ve Sonuçsuz Çabayı\" ve rutinleri temsil eden mitolojik karakter hangisidir? (İpucu: Tanrılar tarafından cezalandırıldığına inanılan mitolojik karakter)",
-    "opts": ["Sisifos", "Meursault", "Godot", "Gregor Samsa"],
-    "ans": 0
-  },
-  {
-    "q": "'Mutlu bir Sisifos hayal etmek' ifadesi ve 'İsyan' kavramı birlikte düşünüldüğünde, absürdizmin hayata bakış açısı hakkında aşağıdaki yorumlardan hangisi yapılabilir?",
-    "opts": ["Hayatın hiçbir anlamı olmadığı için her türlü çaba gereksizdir ve fiziksel intihar tek mantıklı yoldur", "Hayatın anlamsızlığı karşısında pes etmeyip, bu anlamsızlığı kabullenerek yaşamaya devam etmek en büyük başkaldırıdır", "İnsanlar hayatlarına anlam katmak için dogmalara ve sahte inançlara sıkı sıkıya sarılmalıdır", "Sisifos'un mutsuzluğu, evrenin sessizliğine karşı duyulan derin umutsuzluğun bir kanıtıdır"],
-    "ans": 1
-  },
+  }, 
   {
     "q": "Paris'te sergilenen ünlü Mona Lisa tablosu hangi müzede sergilenmektedir?",
     "opts": ["D'Orsay Müzesi", "Louvre Müzesi", "Vatikan Müzesi", "Prado Müzesi"],
