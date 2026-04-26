@@ -135,21 +135,6 @@ const ALL_QUESTIONS = [
     "ans": 2
   },
   {
-    "q": "BDNF (Brain-Derived Neurotrophic Factor) molekülünün, sinir ağları üzerindeki ikili temel işlevi aşağıdakilerden hangisinde doğru olarak verilmiştir?",
-    "opts": ["Sadece yeni nöronların oluşumunu hızlandırmak ve beyni kriz anlarında uyku moduna alarak dinlendirmek", "Kortizol seviyesini kalıcı olarak sıfırlayarak, bireyin panik duygusunu tamamen ortadan kaldırmak", "Yeni ve güçlü sinir bağlantılarının kurulmasını teşvik ederken, aynı anda kullanılmayan ve zayıf sinir ağlarını eleyip budamak", "Fiziksel travmaların beyne ulaşmasını engelleyen kalın bir koruyucu zar tabakası oluşturmak"],
-    "ans": 2
-  },
-  {
-    "q": "Bir bireyin günlük hayatında sürekli konfor alanına sığınması veya tam tersine korktuğu zorlu bir eyleme kendini mecbur bırakması durumunda aMCC bölgesinde nasıl bir fiziksel değişim yaşanması beklenir?",
-    "opts": ["Konfor alanında kalındığında aMCC bölgesi mevcut formunu korurken, zorlu eylemlerde aşırı yüklenmeden dolayı tamamen işlevsiz hale gelir", "Birey korktuğu ve istemediği bir acıya veya zorluğa katlandığında aMCC bölgesi fiziksel olarak büyür (hipertrofi); bahanelerin arkasına sığınıp konfor alanında kalındığında ise hızla küçülür", "aMCC sadece genetik faktörlere bağlı olarak büyür; bireyin dış dünyada aldığı fiziksel veya psikolojik riskler bu bölgenin boyutunu etkilemez", "Zorlu ve stresli ortamlarda aMCC küçülerek beynin daha az enerji harcamasını sağlar; konfor alanında ise dinlenerek hacmini artırır"],
-    "ans": 1
-  },
-  {
-    "q": "Wolff Kanunu göz önüne alındığında, bir bireyin psikolojik dayanıklılığını, iradesini ve soğukkanlılık kapasitesini kalıcı olarak artırabilmesi için en uygun strateji aşağıdakilerden hangisidir?",
-    "opts": ["Gerçek risk barındıran durumları yaşamdan tamamen izole ederek, zihni sürekli güvenli bir konfor alanında meşgul etmek", "Beynin strese bağlı yapısal değişimini engellemek adına, zorluklarla karşılaşıldığında sorumluluğu reddedip pasif bir duruş sergilemek", "Hata yapma payının sıfıra indiği, koruyucu psikolojik sığınakların çıkarıldığı ve gerçek sonuçları olan yüksek riskli durumlarla bilinçli olarak yüzleşmek", "Karar verme süreçlerini yavaşlatmak amacıyla çevresel uyarıcıların olmadığı, sadece tekrar eden ve risksiz alışkanlıklara odaklanmak"],
-    "ans": 2
-  },
-  {
     "q": "Satrançta oyuncular taşlarını nasıl hareket ettirir?",
     "opts": ["Konuşarak", "Tahta üzerinde oynatarak", "Zar atarak", "Kart çekerek"],
     "ans": 1
