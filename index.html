@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>makhsudov — portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfaf3;
+      --bg2: #f5f2e8;
+      --bg3: #eeeade;
+      --text: #33302b;
+      --muted: #706c61;
+      --hint: #a6a192;
+      --border: rgba(60, 50, 30, 0.08);
+      --border2: rgba(60, 50, 30, 0.15);
+      --accent: #33302b;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(253, 250, 243, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+      z-index: 100;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+
+    .nav-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 5rem 2rem 6rem;
+    }
+
+    /* Hero */
+    .hero { margin-bottom: 5rem; }
+
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      padding: 7px 14px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn:hover { background: var(--bg2); color: var(--text); }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .btn-primary:hover { opacity: 0.85; background: var(--text); color: var(--bg); }
+
+    /* Section */
+    .section { margin-bottom: 4rem; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--hint);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Project card */
+    .projects { display: flex; flex-direction: column; gap: 1px; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+
+    .proj-card {
+      background: var(--bg);
+      padding: 1.25rem 1.5rem;
+      border-bottom: 0.5px solid var(--border);
+      transition: background 0.12s;
+    }
+
+    .proj-card:last-child { border-bottom: none; }
+    .proj-card:hover { background: var(--bg2); }
+
+    .proj-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .proj-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .proj-links { display: flex; gap: 8px; flex-shrink: 0; }
+
+    .proj-link {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .proj-link:hover { color: var(--text); border-color: var(--border2); }
+
+    .proj-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    .tag {
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--bg3);
+      border-radius: 20px;
+      padding: 2px 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Project Type Tags (matching tech stack style but distinct) */
+    .type-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--bg2);
+      border: 0.5px solid var(--border2);
+      border-radius: 20px;
+      padding: 2px 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .type-tag svg {
+      opacity: 0.7;
+    }
+
+    /* Video embed */
+    .video-wrap {
+      margin-top: 1rem;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      border: 0.5px solid var(--border);
+    }
+
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+
+    /* Project images */
+    .proj-img {
+      margin-top: 1rem;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 0.5px solid var(--border);
+    }
+
+    .proj-img img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px;
+    }
+
+    .skill-item {
+      background: var(--bg2);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .skill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--hint);
+      flex-shrink: 0;
+    }
+
+    /* About */
+    .about-text {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 12px;
+      color: var(--hint);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      main { padding: 3rem 1rem 4rem; }
+      .hero h1 { font-size: 24px; }
+      .proj-header { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-name">@makhsudov</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <!-- <li><a href="#about">About</a></li> -->
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Hi, I'm @makhsudov 👋</h1>
+      <p>Computer Science student at Bursa Teknik Üniversitesi. Passionate about frontend development — building clean, user-friendly web and mobile experiences.</p>
+      <div class="hero-links">
+        <a href="https://github.com/makhsudov" class="btn btn-primary" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="mailto:mkhsdv27@gmail.com" class="btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          Contact
+        </a>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects">
+      <p class="section-label">Projects</p>
+      <div class="projects">
+
+        <!-- SifreKutusu -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">SifreKutusu — Password Manager</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/SifreKutusu" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">A secure password storage and management system. Protects your data using AES-256-CBC encryption.</p>
+          <div class="tags">
+            <span class="tag">PHP</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">HTML</span>
+            <span class="tag">TailwindCSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/wTkLXYwaaBc" allowfullscreen loading="lazy" title="SifreKutusu Demo"></iframe>
+          </div>
+        </div>
+
+        <!-- NeYesem -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">NeYesem — Food Assistant</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">A smart assistant that compares prices across food delivery platforms. I developed the Python-based scraping system for the backend, while the mobile app was built with Flutter. A Bursa Technical University student project.</p>
+          <div class="tags">
+            <div class="type-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              Group Project
+            </div>
+            <span class="tag">Flutter</span>
+            <span class="tag">Python (Scrapers)</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">AI</span>
+          </div>
+        </div>
+
+        <!-- Flashcards -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">Flashcards</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/flashcards" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">A mobile flashcard app powered by Google Gemini AI. Features a smart repetition system to enhance learning.</p>
+          <div class="tags">
+            <div class="type-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              Group Project
+            </div>
+            <span class="tag">React Native</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Google Gemini AI</span>
+          </div>
+          <div class="proj-img">
+            <img src="study-screen.png" alt="Flashcards App Screenshot">
+          </div>
+        </div>
+
+        <!-- Hamming Code -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">Hamming Code Simulator</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/HammingCodeSimulator" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">An error detection and correction algorithm simulator. Visualizes the working principle of Hamming Code.</p>
+          <div class="tags">
+            <span class="tag">Python</span>
+          </div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/DwC2nwy0Hlw" allowfullscreen loading="lazy" title="Hamming Code Simulator Demo"></iframe>
+          </div>
+        </div>
+
+        <!-- Syntax Highlighter -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">Syntax Highlighter</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/SyntaxHighlighter" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">A code syntax highlighting tool that supports various programming languages.</p>
+          <div class="tags">
+            <span class="tag">Python</span>
+          </div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/b8V-WN-o0so" allowfullscreen loading="lazy" title="Syntax Highlighter Demo"></iframe>
+          </div>
+        </div>
+
+        <!-- netprobe-udp -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">NetProbe</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/netprobe-udp" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">A reliable UDP-based file transfer system. This was a group project where I developed the system architecture and network protocol layers (did not work on frontend).</p>
+          <div class="tags">
+            <div class="type-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              Group Project
+            </div>
+            <span class="tag">Python</span>
+            <span class="tag">UDP</span>
+            <span class="tag">Networking</span>
+          </div>
+        </div>
+
+        <!-- Kırım -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">Crimea — Personal Website</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/makhsudov.github.io/tree/main/kirim" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">An informational website about my homeland, Crimea.</p>
+          <div class="tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+          </div>
+        </div>
+
+        <!-- WTP -->
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-title">WTP Game Project</span>
+            <div class="proj-links">
+              <a href="https://github.com/makhsudov/makhsudov.github.io/tree/main/WTP_Proje1" class="proj-link" target="_blank">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Repo
+              </a>
+            </div>
+          </div>
+          <p class="proj-desc">An interactive web-based game project.</p>
+          <div class="tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section" id="skills">
+      <p class="section-label">Tech stack</p>
+      <div class="skills-grid">
+        <div class="skill-item"><span class="skill-dot"></span>Next.js</div>
+        <div class="skill-item"><span class="skill-dot"></span>React</div>
+        <div class="skill-item"><span class="skill-dot"></span>React Native</div>
+        <div class="skill-item"><span class="skill-dot"></span>TypeScript</div>
+        <div class="skill-item"><span class="skill-dot"></span>JavaScript</div>
+        <div class="skill-item"><span class="skill-dot"></span>Tailwind CSS</div>
+        <div class="skill-item"><span class="skill-dot"></span>HTML / CSS</div>
+        <div class="skill-item"><span class="skill-dot"></span>Python</div>
+        <div class="skill-item"><span class="skill-dot"></span>PHP</div>
+        <div class="skill-item"><span class="skill-dot"></span>PostgreSQL</div>
+        <div class="skill-item"><span class="skill-dot"></span>MySQL</div>
+        <div class="skill-item"><span class="skill-dot"></span>MongoDB</div>
+        <div class="skill-item"><span class="skill-dot"></span>Supabase</div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <!-- <section class="section" id="about">
+      <p class="section-label">About</p>
+      <p class="about-text">
+        I'm a Computer Science student at Bursa Teknik Üniversitesi (Turkey). Originally from Crimea, I'm passionate about building things for the web — from clean UI components to full-stack apps. I enjoy working on projects that solve real problems, like NeYesem, a food ordering assistant we built as a team to help students find the best deals.
+      </p>
+    </section> -->
+
+  </main>
+
+  <footer>
+    <p><a href="https://github.com/makhsudov" style="color: inherit;">github.com/makhsudov</a></p>
+  </footer>
+
+</body>
+</html>
